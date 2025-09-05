@@ -12,14 +12,18 @@ const estacionSchema =  mongoose.Schema(
     },
 
     ubicacion:{
-        type: String,
-        required: true,
+        direccion: {
+            type: String,
+            require: true
+        },
+
         latitud: {
             type: Number,
             required: true,
             min: -90,
             max: 90
         },
+
         longitud: {
             type: Number,
             required: true,
@@ -40,12 +44,16 @@ const estacionSchema =  mongoose.Schema(
         type: Number,
         required: true,
         min: 0,
-        max: function() { return this.capacidad; }, 
+        default: 0,
+        max: 5
     },
     
     bicicletas : [
         { type: mongoose.Schema.Types.ObjectId, 
-        ref: 'bicicletas' }
+        ref: 'bicicleta', 
+        default : []
+    }
+        
     ],
 
      activo: {

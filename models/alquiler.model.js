@@ -11,19 +11,19 @@ const alquilerSchema =  mongoose.Schema(
 
     bicicleta: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'bicicletas', 
+        ref: 'bicicleta', 
         required: true 
     },
 
     estacionInicio: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'estaciones', 
+        ref: 'estacione', 
         required: true 
     },
 
     estacionFin: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'estaciones' 
+        ref: 'estacione' 
     },
 
     fechaInicio: { 

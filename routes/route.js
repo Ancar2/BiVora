@@ -16,7 +16,7 @@ const router = express.Router();
 //rutas de usuario
 router.get('/users', controllUser.getUsers)
 router.get('/users/:id', controllUser.getOneUser)
-router.post('/users/create', middlewareJWT, controllUser.createUser)
+router.post('/users/create', controllUser.createUser)
 router.put('/users/update/:id',middlewareJWT, controllUser.updateUser)
 router.delete('/users/delete/:id',middlewareJWT, controllUser.deleteUser)
 
@@ -38,7 +38,7 @@ router.delete('/bicicletas/delete/:id',middlewareJWT,controllBici.deleteBici)
 router.get('/alquiler',controllAlquiler.getAlquileres) //?idestacion
 router.get('/alquiler/:id',controllAlquiler.getOneAlquiler)
 router.post('/alquiler/create',middlewareJWT,controllAlquiler.createAlquiler)
-router.put('/alquiler/update/:id',middlewareJWT,controllAlquiler.finalizarAlquiler)
+router.put('/alquiler/finalizar/:id',middlewareJWT,controllAlquiler.finalizarAlquiler)
 
 
 //Login

@@ -19,7 +19,7 @@ const biciSchema =  mongoose.Schema({
 
     estacion :{ 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'estaciones' },
+        ref: 'estacione' },
 },{
     timestamps: true,       
 })

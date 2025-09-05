@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const bcrypt = require('bcrypt')
 
 
 const userSchema =  mongoose.Schema({
@@ -45,6 +46,9 @@ const userSchema =  mongoose.Schema({
     activo: {
         type: Boolean,
         default: true
+    },
+    inactiveAt: {
+        type: Date
     }
 },{
     timestamps: true,

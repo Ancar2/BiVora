@@ -48,11 +48,12 @@ exports.updateUser = async (req, res) => {
         let id = req.params.id
         let data = req.body
         let userId = req.decode.id
+        let role = req.decode.role
 
         
         const user = await userModel.findById(id)
        
-        if (userId == user._id || user.role == 'owner') {
+        if (userId == user._id || role == 'owner') {
             let update = await userModel.findByIdAndUpdate(id, {$set: data},{new: true})
             res.status(200).json({msj: 'usuario actualizado', data: update})
         }else{
@@ -70,19 +71,31 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     try {
         const id = req.params.id
-        const eliminar = req.query.hard == 'true'
+        const eliminar = req.query.eliminar == 'true'
+        let userId = req.decode.id
+        let role = req.decode.role
         
         const user = await userModel.findById(id)
+        
+        if (userId != user._id && role == 'cliente') {
+            return res.status(403).json({msj: 'no tienes permisos para eliminar otro usuario'})
+        }
+
+
+        if (user.role == 'owner') {
+            return res.status(403).json({msj: 'este usuario "owner" no se puede eliminar'})
+        }
+        
 
         if (eliminar) {
             await userModel.findByIdAndDelete(id)
             return res.status(200).json({msj: 'usuario permamentemente eliminado'})
         }else{
-            if (user.activo) {
-                return res.status(410).json({msj: 'usuario eliminado'})
+            if (user.activo == false) {
+                return res.status(410).json({msj: 'usuario ya fue eliminado'})
             } else{
                 user.activo = false
-                user.deleteAt = new Date()
+                user.inactiveAt = new Date()
                 await user.save()
 
                 return res.status(200).json({msj: 'usuario eliminado', data: user})

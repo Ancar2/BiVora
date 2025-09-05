@@ -46,7 +46,7 @@ exports.finalizarAlquiler = async (req, res) => {
     const data = req.body;
     const userId =req.decode.id
 
-    const alquiler = await alquilerModel.findOne({_id: id, usuario: userId}).populate("bicicleta");
+    const alquiler = await alquilerModel.findOne({_id: id, usuario: userId});
 
     if (!alquiler) {
       return res.status(404).json({ msj: "Alquiler no encontrado o no eres quien hizo este alquiler" });

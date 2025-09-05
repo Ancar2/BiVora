@@ -52,8 +52,12 @@ exports.createBici = async (req, res) => {
 exports.getBicicletas = async (req, res) => {
     try {
         const deEstacion = req.query.estacion
+
         if (!deEstacion) {
-            let data = await biciModel.find({})
+            let data = await biciModel.find({}).populate({
+            path: 'estacion',
+            select: 'nombre ubicacion'
+        })
             return res.status(200).json({msj: 'todas las bicicletas!', data: data})
         }
         
@@ -61,7 +65,9 @@ exports.getBicicletas = async (req, res) => {
             path: 'estacion',
             select: 'nombre ubicacion'
         })
+
         res.status(200).json({msj: 'bicicletas en la estacion!', data: data})
+        
     } catch (error) {
         res.status(500).json({msj: 'error al obtener bicicletas', error: error.message})
     }

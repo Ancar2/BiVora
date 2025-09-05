@@ -32,9 +32,10 @@ exports.getEstaciones = async (req, res) => {
         if (!data || data.length == 0) {
             return res.status(400).json({ msj: 'no hay estaciones a mostrar' })
         }
-        res.status(200).json(data)
+
+        res.status(200).json({ msj: 'estaciones obtenidas', data: data })
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({msj: 'error al obtener Estaciones', error: error.message})
     }
 }
 
@@ -73,7 +74,7 @@ exports.updateEstacion = async (req, res) => {
 
         if (role == 'owner') {
             let update = await estacionModel.findByIdAndUpdate(id, { $set: data, $inc: { __v: 1 } }, { new: true })
-            res.status(200).json(update)
+            res.status(200).json({ msj: 'estacion modificada', data: update })
         } else {
             res.status(403).json({ msj: 'tu no tienes permisos para actualizar estacion' })
         }
