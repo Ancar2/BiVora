@@ -26,7 +26,7 @@ exports.getEstaciones = async (req, res) => {
     try {
         let data = await estacionModel.find().populate({
             path: 'bicicletas',
-            select: 'serial estado',
+            select: 'serial estado img',
         })
 
         if (!data || data.length == 0) {
@@ -45,7 +45,7 @@ exports.getOneEstacion = async (req, res) => {
         let id = req.params.id
         let estacion = await estacionModel.find({ _id: id, activo: true }).populate({
             path: 'bicicletas',
-            select: 'serial estado',
+            select: 'serial estado img',
         })
 
         if (estacion) {

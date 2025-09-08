@@ -17,10 +17,21 @@ exports.createAlquiler = async (req, res) => {
       return res.status(404).json({ msj: "Bicicleta no encontrada en esta estacion" });
     }
 
+    if (bici.estado == 'alquilada' ) {
+      return res.status(404).json({ msj: "Bicicleta en alquiler, 'esta en uso!'" });
+    }
+
+   
+
     await estacionModel.findByIdAndUpdate(estacion._id, {
       $pull: { bicicletas: bici._id },
-      $inc: { bicicletasDisponibles: -1 }
     });
+
+    
+    const estacionActualizada = await estacionModel.findById(estacion._id);
+
+    estacionActualizada.bicicletasDisponibles = estacionActualizada.bicicletas.length;
+    await estacionActualizada.save();
 
     bici.estado = "alquilada";
     await bici.save();
@@ -71,8 +82,14 @@ exports.finalizarAlquiler = async (req, res) => {
 
     await estacionModel.findByIdAndUpdate(estacion._id, {
       $push: { bicicletas: alquiler.bicicleta._id },
-      $inc: { bicicletasDisponibles: 1 }
     });
+
+    
+    const estacionActualizada = await estacionModel.findById(estacion._id);
+
+
+    estacionActualizada.bicicletasDisponibles = estacionActualizada.bicicletas.length;
+    await estacionActualizada.save();
 
     alquiler.estacionFin = estacion._id;
    

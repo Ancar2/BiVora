@@ -17,6 +17,11 @@ const biciSchema =  mongoose.Schema({
         default: 'disponible'
     },
 
+    img:{
+        type: String,
+        required: true,
+    },
+
     estacion :{ 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'estacione' },
