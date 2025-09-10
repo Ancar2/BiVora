@@ -30,6 +30,8 @@ exports.createBici = async (req, res) => {
         if (!estacion) {
             return res.status(400).json({  msj: `Estacion no existe`})
         }
+        
+        data.estacion = estacion._id;
 
         if (estacion.bicicletas.length>= estacion.capacidad) {
             return res.status(400).json({ msj: `La estacion ${estacion.nombre} está llena. Elige otra estacion.`})
@@ -107,6 +109,21 @@ exports.updateBici = async (req, res) => {
         if (!bicicleta) {
             res.status(404).json({msj: 'bicicleta no existe'})
         }
+
+
+         let estacion
+        if (mongoose.Types.ObjectId.isValid(data.estacion)) {
+            estacion = await estacionModel.findById(data.estacion);
+        } else {
+         estacion = await estacionModel.findOne({ nombre: data.estacion });
+        }
+
+        if (!estacion) {
+            return res.status(400).json({  msj: `Estacion no existe`})
+        }
+        
+        data.estacion = estacion._id;
+
 
         const update = await biciModel.findByIdAndUpdate(id, {$set: data, $inc: { __v: 1 }},{new: true})
         res.status(200).json({msj: 'bicicleta modificada!', data: update})

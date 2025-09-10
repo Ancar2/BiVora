@@ -43,7 +43,7 @@ exports.getEstaciones = async (req, res) => {
 exports.getOneEstacion = async (req, res) => {
     try {
         let id = req.params.id
-        let estacion = await estacionModel.find({ _id: id, activo: true }).populate({
+        let estacion = await estacionModel.findOne({ _id: id, activo: true }).populate({
             path: 'bicicletas',
             select: 'serial estado img',
         })
